@@ -1,7 +1,7 @@
 {
   "name": "frontend",
   "version": "0.1.0",
-  "homepage": "https://frontend-socket.onrender.com/messages/",
+  "homepage": "https://frontend-socket.onrender.com/",
   "private": true,
   "dependencies": {
     "@chakra-ui/react": "^2.8.2",

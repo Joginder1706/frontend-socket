@@ -335,7 +335,7 @@ function App() {
     loggedId = loginUser?.id;
   }
   return (
-    <Router basename="/messages">
+    <Router>
       {loggedId === null || loggedId === undefined ? (
         <div className="flex justify-center items-center h-screen bg-gray-100">
           <div className="text-center">
