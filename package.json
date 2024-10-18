@@ -1,6 +1,7 @@
 {
   "name": "frontend",
   "version": "0.1.0",
+  "proxy": "https://backend-socket-7gmk.onrender.com",
   "homepage": "https://frontend-socket.onrender.com/messages",
   "private": true,
   "dependencies": {
