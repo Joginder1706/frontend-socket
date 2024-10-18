@@ -1,7 +1,8 @@
 {
   "name": "frontend",
   "version": "0.1.0",
-  "homepage": "https://frontend-socket.onrender.com/",
+  "homepage": "https://frontend-socket.onrender.com/messages",
+  "proxy": "https://fansmaps-node-ygset.ondigitalocean.app",
   "private": true,
   "dependencies": {
     "@chakra-ui/react": "^2.8.2",
