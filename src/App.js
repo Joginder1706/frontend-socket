@@ -23,7 +23,7 @@ import { useMediaQuery } from "react-responsive";
 import getCookie from "./utils/getCookie";
 import axios from "axios";
 
-const API_URL = "https://fansmaps-node-ygset.ondigitalocean.app";
+const API_URL = "https://backend-socket-7gmk.onrender.com";
 // const API_URL = "http://localhost:5000";
 
 const logginId = getCookie("loggedin");

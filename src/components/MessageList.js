@@ -13,7 +13,7 @@ function MessageList({ tab, success, setSuccess, setSelectedUserList, socket, fe
 
   const logourl = "https://www.fansmaps.com/pictures/logo/";
 
-  const API_URL = "https://fansmaps-node-ygset.ondigitalocean.app/api";
+  const API_URL = "https://backend-socket-7gmk.onrender.com/api";
   // const API_URL = "http://localhost:5000/api";
 
   const [isModalVisible, setIsModalVisible] = useState(false);

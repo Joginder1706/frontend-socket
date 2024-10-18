@@ -4,7 +4,7 @@ import axios from 'axios';
 import { useNavigate } from "react-router-dom";
 import getCookie from '../utils/getCookie';
 
-const API_URL = "https://fansmaps-node-ygset.ondigitalocean.app/api";
+const API_URL = "https://backend-socket-7gmk.onrender.com/api";
 // const API_URL = "http://localhost:5000/api";
 
 const BlockUser = ({ visible, onClose, selectedUserId, loggedInUser }) => {

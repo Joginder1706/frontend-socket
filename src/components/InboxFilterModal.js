@@ -7,7 +7,7 @@ import { faSpinner } from '@fortawesome/free-solid-svg-icons';
 const { Panel } = Collapse;
 
 const InboxFilterModal = ({ isModalVisible, setIsModalVisible, setSuccessMessage }) => {
-  const API_URL = "https://fansmaps-node-ygset.ondigitalocean.app/api";
+  const API_URL = "https://backend-socket-7gmk.onrender.com/api";
   // const API_URL = "http://localhost:5000/api";
 
   const [filtersEnabled, setFiltersEnabled] = useState(false);

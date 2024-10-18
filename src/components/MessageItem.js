@@ -11,7 +11,7 @@ import { CheckOutlined } from "@ant-design/icons";
 import 'react-toastify/dist/ReactToastify.css';
 import axios from "axios";
 
-const API_URL = "https://fansmaps-node-ygset.ondigitalocean.app/api";
+const API_URL = "https://backend-socket-7gmk.onrender.com/api";
 // const API_URL = "http://localhost:5000/api";
 
 const MessageItem = ({ data, index, deleteUser, loading, message, tab, isReceiverOnline, loggedInUser }) => {
