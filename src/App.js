@@ -3,8 +3,8 @@ import io from "socket.io-client";
 import './App.css';
 import getCookie from "./getCookie";
 
-const API_URL = "https://backend-socket-7gmk.onrender.com";
-// const API_URL = "http://localhost:8000";
+// const API_URL = "https://backend-socket-7gmk.onrender.com";
+const API_URL = "http://localhost:8000";
 
 const logginId = getCookie();
 const queryParams = { userId: logginId ? logginId : null };
@@ -69,7 +69,7 @@ function App() {
         socket.off("disconnect");
       }
     };
-  }, [socket]);
+  }, [socket?.connected]);
   return (
     <div className="App">
       <h1>Chatting Application</h1>
