@@ -32,7 +32,11 @@ const Sidebar = ({ userDetail, success, setSuccess, selectedUserList, setCountUn
     if (!id) return;
 
     try {
-      const response = await axios.get(`${API_URL}/filtered?userid=${id}&page=1&limit=500`);
+      const response = await axios.get(`${API_URL}/filtered?userid=${id}&page=1&limit=500`, {
+        headers: {
+          'Content-Type': 'application/json',
+        }
+      });
 
       if (response?.data?.length > 0) {
         let count = 0;
@@ -53,7 +57,13 @@ const Sidebar = ({ userDetail, success, setSuccess, selectedUserList, setCountUn
     if (!id) return;
 
     try {
-      const response = await axios.get(`${API_URL}/archive?userid=${id}&page=1&limit=500`);
+      const response = await axios.get(`${API_URL}/archive?userid=${id}&page=1&limit=500`, {
+        headers: {
+          'Content-Type': 'application/json',
+          // If you have a token
+          // 'Authorization': `Bearer ${yourToken}`
+        }
+      });
       if (response?.data?.length > 0) {
         let count = 0;
         response.data.forEach(element => {
@@ -73,7 +83,13 @@ const Sidebar = ({ userDetail, success, setSuccess, selectedUserList, setCountUn
     if (!id) return;
 
     try {
-      const response = await axios.get(`${API_URL}/inbox?userid=${id}&page=1&limit=500`);
+      const response = await axios.get(`${API_URL}/inbox?userid=${id}&page=1&limit=500`, {
+        headers: {
+          'Content-Type': 'application/json',
+          // If you have a token
+          // 'Authorization': `Bearer ${yourToken}`
+        }
+      });
       if (response?.data?.length > 0) {
         let count = 0;
         response.data.forEach(element => {

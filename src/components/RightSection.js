@@ -31,7 +31,11 @@ const RightSection = ({ userData, loggedInUser, socket, setRestoreMessage, isRec
     if (!userId || !selectedId) return;
     setLoading(true);
     try {
-      const response = await axios.get(`${API_URL}/messages/${userId}/${selectedId}`);
+      const response = await axios.get(`${API_URL}/messages/${userId}/${selectedId}`, {
+        headers: {
+          'Content-Type': 'application/json',
+        }
+      });
       setMessages(response.data);
       setLoading(false);
     } catch (error) {
@@ -45,7 +49,11 @@ const RightSection = ({ userData, loggedInUser, socket, setRestoreMessage, isRec
     if (!selectedId) return;
     setLoading(true);
     try {
-      const response = await axios.get(`${API_URL}/user/${selectedId}`);
+      const response = await axios.get(`${API_URL}/user/${selectedId}`, {
+        headers: {
+          'Content-Type': 'application/json',
+        }
+      });
       const parsedetails = JSON.parse(response.data[0]?.details);
       const parsePhoto = JSON.parse(response.data[0]?.photos);
       const data = {

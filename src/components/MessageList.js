@@ -51,7 +51,11 @@ function MessageList({ tab, success, setSuccess, setSelectedUserList, socket, fe
     setLoading(true);
 
     try {
-      const response = await axios.get(`${API_URL}/${path[1]}?userid=${id}&page=${updatePage}&limit=20`);
+      const response = await axios.get(`${API_URL}/${path[1]}?userid=${id}&page=${updatePage}&limit=20`, {
+        headers: {
+          'Content-Type': 'application/json',
+        }
+      });
       if (response?.data?.length > 0) {
         let updateArray = response.data.sort((a, b) => b.is_read - a.is_read);
         let newArray = updateArray.sort((a, b) => b.is_pinned - a.is_pinned);

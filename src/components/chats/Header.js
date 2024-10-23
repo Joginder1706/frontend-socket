@@ -49,7 +49,7 @@ const Header = ({
   };
 
   // Handle increment
-  const handleIncrement = () => {
+  const handleIncrement = () => { 
     const currentIndex = userData.findIndex((obj) => obj.id === parseInt(selectedUserId));
     if (currentIndex < userData.length - 1) {
       setSelectedUserId(userData[currentIndex + 1].id);

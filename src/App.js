@@ -134,7 +134,6 @@ function AppContent() {
       setIsReceiverOnline((prevUsers) =>
         prevUsers.filter((id) => id !== userId)
       );
-
     };
 
     // Attach socket listeners
@@ -195,7 +194,11 @@ function AppContent() {
     setLoading(true);
 
     try {
-      const response = await axios.post(`${API_URL}/api/auth/${id}`, { token });
+      const response = await axios.post(`${API_URL}/api/auth/${id}`, { token }, {
+        headers: {
+          'Content-Type': 'application/json',
+        }
+      });
       if (response?.status == 201) {
         window.location.href = "https://www.fansmaps.com/user/sign-out"
       }
@@ -218,7 +221,13 @@ function AppContent() {
     if (!id) return;
     setLoading(true);
     try {
-      const response = await axios.get(`${API_URL}/api/user/${id}`);
+      const response = await axios.get(`${API_URL}/api/user/${id}`, {
+        headers: {
+          'Content-Type': 'application/json',
+          // If you have a token
+          // 'Authorization': `Bearer ${yourToken}`
+        }
+      });
       const parsedetails = response.data[0]?.details ? JSON.parse(response.data[0]?.details) : null;
       const parseArchive = response.data[0]?.archived_users ? JSON.parse(response.data[0]?.archived_users) : null;
       const parseBlockedUser = response.data[0]?.block_users ? JSON.parse(response.data[0]?.block_users) : null;

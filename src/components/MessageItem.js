@@ -58,7 +58,11 @@ const MessageItem = ({ data, index, deleteUser, loading, message, tab, isReceive
   const handleRead = async (id) => {
     if (!id) return;
     try {
-      const res = await axios.put(`${API_URL}/mark-as-unread/${id}`)
+      const res = await axios.put(`${API_URL}/mark-as-unread/${id}`, {
+        headers: {
+          'Content-Type': 'application/json',
+        }
+      })
       if (res.status == 200) {
         openNotification("success", "Message is unread!");
       }

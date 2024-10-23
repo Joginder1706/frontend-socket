@@ -27,7 +27,11 @@ const InboxFilterModal = ({ isModalVisible, setIsModalVisible, setSuccessMessage
     if (!id) return;
     setLoading(true);
     try {
-      const response = await axios.get(`${API_URL}/cats/${id}`);
+      const response = await axios.get(`${API_URL}/cats/${id}`,{
+        headers: {
+          'Content-Type': 'application/json',
+        }
+      });
       setCategories(response.data.cats_data);
       if (response.data?.filter_data?.length > 0) {
         let data = JSON.parse(response.data.filter_data[0].cat_status);
