@@ -58,6 +58,7 @@ const RightSubLeft = ({
         userData={userData}
         socket={socket}
         setSelectedUserList={setSelectedUserList}
+        selectedUserData={selectedUserData}
       />
     </div>
   );

@@ -13,8 +13,8 @@ function MessageList({ tab, success, setSuccess, setSelectedUserList, socket, fe
 
   const logourl = "https://www.fansmaps.com/pictures/logo/";
 
-  const API_URL = "https://backend-socket-7gmk.onrender.com/api";
-  // const API_URL = "http://localhost:5000/api";
+  // const API_URL = "https://backend-socket-7gmk.onrender.com/api";
+  const API_URL = "http://localhost:5000/api";
 
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [successMessage, setSuccessMessage] = useState(false)
@@ -26,7 +26,7 @@ function MessageList({ tab, success, setSuccess, setSelectedUserList, socket, fe
   const [page, setPage] = useState(1);
   const [hasMore, setHasMore] = useState(true);
   const observer = useRef();
-  const previousIdRef = useRef();
+  const previousIdRef = useRef(0);
   const location = useLocation();
   const path = location.pathname.split("/");
   const { id: loggedId } = getCookie("loggedin");
@@ -44,14 +44,9 @@ function MessageList({ tab, success, setSuccess, setSelectedUserList, socket, fe
     let { id } = getCookie("loggedin");
     if (!id) return;
     if (loading || !hasMore) return;
-    let updatePage = page;
-    if (previousIdRef.current && fetchDataById && previousIdRef.current !== fetchDataById) {
-      updatePage = 1;
-    }
     setLoading(true);
-
     try {
-      const response = await axios.get(`${API_URL}/${path[1]}?userid=${id}&page=${updatePage}&limit=20`, {
+      const response = await axios.get(`${API_URL}/${path[1]}?userid=${id}&page=${page}&limit=20`, {
         headers: {
           'Content-Type': 'application/json',
         }
@@ -75,9 +70,7 @@ function MessageList({ tab, success, setSuccess, setSelectedUserList, socket, fe
       } else {
         setHasMore(false);
       }
-      if (fetchDataById) {
-        previousIdRef.current = fetchDataById;
-      }
+      
     } catch (error) {
       console.error("Error fetching messages:", error);
       setUserList([]);
@@ -93,7 +86,7 @@ function MessageList({ tab, success, setSuccess, setSelectedUserList, socket, fe
 
       observer.current = new IntersectionObserver((entries) => {
         if (entries[0].isIntersecting && hasMore) {
-          if (userList.length >= page * 4) {
+          if (userList?.length >= page * 4) {
             setPage((prevPage) => prevPage + 1);
             fetchData();
           }
@@ -102,7 +95,7 @@ function MessageList({ tab, success, setSuccess, setSelectedUserList, socket, fe
 
       if (node) observer.current.observe(node);
     },
-    [loading, hasMore, page, userList.length]
+    [loading, hasMore, page, userList?.length]
   );
 
 
@@ -122,7 +115,102 @@ function MessageList({ tab, success, setSuccess, setSelectedUserList, socket, fe
     resetState();
     fetchData();
 
-  }, [path[1], path?.length, fetchDataById])
+  }, [path[1], path?.length])
+
+  useEffect(() => {
+    let prevId = localStorage.getItem('previousId');
+
+    if (!loggedInUser || !fetchDataById || fetchDataById.id == prevId) return;
+
+    let isArchive = false;
+    if (loggedInUser.archived_users) {
+      isArchive = loggedInUser.archived_users.includes(fetchDataById.user_detail.id.toString());
+    }
+
+    let updateList = {
+      id: fetchDataById.user_detail.id,
+      message: fetchDataById,
+      logo: fetchDataById.user_detail.logo,
+      place_name: fetchDataById.user_detail.place_name,
+      place_city_name: fetchDataById.user_detail.city_name,
+      place_state_name: fetchDataById.user_detail.state_name,
+      place_country_name: fetchDataById.user_detail.country_name,
+      last_message_text: fetchDataById.message_text,
+    }
+    let isPresent = userList?.some((item) => item.id == updateList.id);
+
+    if (fetchDataById.is_restricted == 1) {
+      if (path[1] == 'filtered') {
+        if (userList?.length > 0 && isPresent) {
+          let data = userList.map((item) => {
+            if (item.id == updateList.id) {
+              return updateList;
+            }
+            return item
+          })
+          setUserList(data)
+        }
+        if (userList?.length > 0 && !isPresent) {
+          let data = [...userList];
+          data.unshift(updateList);
+          setUserList(data)
+        }
+        if (userList?.length == 0) {
+          let data = []
+          data.push(updateList)
+          setUserList(data)
+        }
+      }
+    }
+    else if (isArchive) {
+      if (path[1] == 'archive') {
+        if (userList?.length > 0 && isPresent) {
+          let data = userList.map((item) => {
+            if (item.id == updateList.id) {
+              return updateList;
+            }
+            return item
+          })
+          setUserList(data)
+        }
+        if (userList?.length > 0 && !isPresent) {
+          let data = [...userList];
+          data.unshift(updateList);
+          setUserList(data)
+        }
+        if (userList?.length == 0) {
+          let data = []
+          data.push(updateList)
+          setUserList(data)
+        }
+      }
+    }
+    else {
+      if (path[1] == 'inbox') {
+        if (userList?.length > 0 && isPresent) {
+          let data = userList.map((item) => {
+            if (item.id == updateList.id) {
+              return updateList;
+            }
+            return item
+          })
+          setUserList(data)
+        }
+        if (userList?.length > 0 && !isPresent) {
+          let data = [...userList];
+          data.unshift(updateList);
+          setUserList(data)
+        }
+        if (userList?.length == 0) {
+          let data = []
+          data.push(updateList)
+          setUserList(data)
+        }
+      }
+    }
+    localStorage.setItem('previousId', fetchDataById.id);
+
+  }, [fetchDataById, loggedInUser])
 
 
 

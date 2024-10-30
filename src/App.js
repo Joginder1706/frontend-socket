@@ -23,8 +23,8 @@ import { useMediaQuery } from "react-responsive";
 import getCookie from "./utils/getCookie";
 import axios from "axios";
 
-const API_URL = "https://backend-socket-7gmk.onrender.com";
-// const API_URL = "http://localhost:5000";
+// const API_URL = "https://backend-socket-7gmk.onrender.com";
+const API_URL = "http://localhost:5000";
 
 const logginId = getCookie("loggedin");
 const queryParams = { userId: logginId ? logginId.id : null };
@@ -144,12 +144,15 @@ function AppContent() {
       socket.on("sendForOfflineUsers", (message) => {
         if (loggedId === message?.receiver_id) {
           if (message.is_read === 1 && message?.receiver_online === 0) {
-            setFetchDataById(message.id);
+            setFetchDataById(message);
           }
 
-          if (message.is_read === 1 && message?.receiver_online === 1) {
-            setFetchUserOnlineId(message.id);
+          if (message.is_read === 1) {
+            setFetchUserOnlineId(message);
           }
+          // if (message.is_read === 1 && message?.receiver_online === 1) {
+          //   setFetchUserOnlineId(message.id);
+          // }
         }
       });
 

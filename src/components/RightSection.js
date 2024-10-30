@@ -16,8 +16,8 @@ const RightSection = ({ userData, loggedInUser, socket, setRestoreMessage, isRec
   const [loading, setLoading] = useState(false);
   const [checkRightSection, setCheckRightSection] = useState(false);
 
-  const API_URL = "https://backend-socket-7gmk.onrender.com/api";
-  // const API_URL = "http://localhost:5000/api";
+  // const API_URL = "https://backend-socket-7gmk.onrender.com/api";
+  const API_URL = "http://localhost:5000/api";
 
   useEffect(() => {
     const { id: userCookie } = getCookie("loggedin");
@@ -46,7 +46,7 @@ const RightSection = ({ userData, loggedInUser, socket, setRestoreMessage, isRec
 
   const fetchUserData = async () => {
     const selectedId = selectedUserId ?? id;
-    if (!selectedId) return;
+    if (!userId || !selectedId) return;
     setLoading(true);
     try {
       const response = await axios.get(`${API_URL}/user/${selectedId}`, {
@@ -60,6 +60,7 @@ const RightSection = ({ userData, loggedInUser, socket, setRestoreMessage, isRec
         ...response.data[0],
         details: parsedetails,
         photos: parsePhoto,
+        id: parseInt(userId)
       };
 
       setSelectedUserData(data);

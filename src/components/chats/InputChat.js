@@ -19,7 +19,8 @@ const InputChat = ({
   loggedInUser,
   userData,
   socket,
-  setSelectedUserList
+  setSelectedUserList,
+  selectedUserData
 }) => {
   const location = useLocation();
   const chatRef = useRef(null);
@@ -155,6 +156,7 @@ const InputChat = ({
       message_text: message,
       image_url: imageUrl,
       last_message_timestamp: new Date().toISOString(),
+      user_detail: selectedUserData
     };
 
     if (socket) {
