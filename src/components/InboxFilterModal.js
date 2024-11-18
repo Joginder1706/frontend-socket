@@ -13,7 +13,7 @@ const InboxFilterModal = ({ isModalVisible, setIsModalVisible, setSuccessMessage
   const [filtersEnabled, setFiltersEnabled] = useState(false);
   const [profileTypes, setProfileTypes] = useState([]);
   const [ageRange, setAgeRange] = useState([18, 39]);
-  const [heightRange, setHeightRange] = useState([0, 60]);
+  const [heightRange, setHeightRange] = useState([36, 96]);
   const [distance, setDistance] = useState(0);
   const [ethnicities, setEthnicities] = useState([]);
   const [minWords, setMinWords] = useState(0);
@@ -27,7 +27,7 @@ const InboxFilterModal = ({ isModalVisible, setIsModalVisible, setSuccessMessage
     if (!id) return;
     setLoading(true);
     try {
-      const response = await axios.get(`${API_URL}/cats/${id}`,{
+      const response = await axios.get(`${API_URL}/cats/${id}`, {
         headers: {
           'Content-Type': 'application/json',
         }
@@ -68,8 +68,8 @@ const InboxFilterModal = ({ isModalVisible, setIsModalVisible, setSuccessMessage
       setBlockedWords([...filterData.blockedWords])
     }
     if (filterData?.heightRange?.length > 0) {
-      let feet1 = feetInchIntoValue(heightRange[0]);
-      let feet2 = feetInchIntoValue(heightRange[1]);
+      let feet1 = feetInchIntoValue(filterData?.heightRange[0]);
+      let feet2 = feetInchIntoValue(filterData?.heightRange[1]);
       setHeightRange([feet1, feet2])
     }
   }, [filterData])
@@ -84,12 +84,21 @@ const InboxFilterModal = ({ isModalVisible, setIsModalVisible, setSuccessMessage
     } else if (typeof blockedWords === 'string' && blockedWords) {
       blocked = blockedWords.split(',').map(word => word.trim()).filter(word => word !== '');
     }
+    let height = [];
+    if (heightRange?.length > 0 && typeof heightRange[0] === 'number') {
+      let feet1 = feetInchesFormatter(heightRange[0]);
+      let feet2 = feetInchesFormatter(heightRange[1]);
+      height.push(feet1)
+      height.push(feet2)
+    } else {
+      height = [...heightRange];
+    }
 
-    const filterData = {
+    const filters = {
       isEnable: filtersEnabled,
       profileTypes,
       ageRange,
-      heightRange,
+      heightRange: height,
       distance,
       ethnicities,
       minWords,
@@ -103,7 +112,7 @@ const InboxFilterModal = ({ isModalVisible, setIsModalVisible, setSuccessMessage
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify(filterData),
+        body: JSON.stringify(filters),
       });
 
       if (!response.ok) {
@@ -189,7 +198,8 @@ const InboxFilterModal = ({ isModalVisible, setIsModalVisible, setSuccessMessage
   };
 
   const feetInchesFormatter = (value) => {
-    const feet = Math.floor(value / 12) + 3; // Start from 3'
+    const feet = Math.floor(value / 12); // Start from 3'
+    // const feet = Math.floor(value / 12) + 3; // Start from 3'
     const inches = value % 12;
     return `${feet}'${inches}`;
   };
@@ -202,8 +212,8 @@ const InboxFilterModal = ({ isModalVisible, setIsModalVisible, setSuccessMessage
   }
 
   const milesFormatter = (value) => `${value} miles`;
-  const handleHeightChange = (values) => {
 
+  const handleHeightChange = (values) => {
     const formattedValues = values.map(feetInchesFormatter);
     setHeightRange(formattedValues);
   };
@@ -287,9 +297,10 @@ const InboxFilterModal = ({ isModalVisible, setIsModalVisible, setSuccessMessage
                 <Slider
                   onChange={handleHeightChange}
                   range
-                  defaultValue={[0, 60]}
-                  min={0}
-                  max={60}
+                  // defaultValue={[0, 60]}
+                  defaultValue={[heightRange[0], heightRange[1]]}
+                  min={36}
+                  max={96}
                   step={1}
                   tooltip={{
                     formatter: feetInchesFormatter,
